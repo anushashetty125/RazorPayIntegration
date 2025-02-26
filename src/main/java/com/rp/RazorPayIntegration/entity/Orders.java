@@ -15,6 +15,7 @@ public class Orders {
     private String name;
     private String email;
     private Double amount;
+    private String currency;
     private String paymentStatus;
     private String razorpayOrderId;
 }

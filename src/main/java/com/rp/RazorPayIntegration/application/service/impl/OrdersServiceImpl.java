@@ -31,7 +31,7 @@ public class OrdersServiceImpl implements OrdersService {
         JSONObject jsonObject = new JSONObject();
         //Convert to paisa
         jsonObject.put("amount",orders.getAmount() * 100);
-        jsonObject.put("currency","INR");
+        jsonObject.put("currency",orders.getCurrency());
         jsonObject.put("receipt",orders.getEmail());
         val razorPayOrderObj = razorpayClient.orders.create(jsonObject);
         orders.setRazorpayOrderId(razorPayOrderObj.get("id"));
