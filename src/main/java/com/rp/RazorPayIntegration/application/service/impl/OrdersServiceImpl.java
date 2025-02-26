@@ -44,7 +44,9 @@ public class OrdersServiceImpl implements OrdersService {
     public void updateOrderStatus(Map<String, String> response) {
         String razorpayId = response.get("razorpay_order_id");
         val order = ordersRepository.findByRazorpayOrderId(razorpayId);
-        order.ifPresent(orders -> orders.setPaymentStatus("PAID"));
-        ordersRepository.save(order.get());
+        if (order.isPresent()) {
+            order.get().setPaymentStatus("PAID");
+            ordersRepository.save(order.get());
+        }
     }
 }

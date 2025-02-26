@@ -12,22 +12,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/api/v1/order")
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
 public class OrdersController {
     private final OrdersApplication ordersApplication;
-    @GetMapping
+
+    @GetMapping("/order")
     public String ordersPage(){
         return "order";
     }
 
-    @PostMapping
+    @PostMapping(value = "/create-order", produces = "application/json")
     @ResponseBody
     public ResponseEntity<Orders> createOrder(@RequestBody Orders orders) throws RazorpayException {
         return ordersApplication.createOrder(orders);
     }
     @PostMapping("/paymentCallback")
-    @ResponseBody
     public String paymentCallback(@RequestParam Map<String, String> response) {
         ordersApplication.updateOrderStatus(response);
         return "success";
