@@ -2,6 +2,7 @@ package com.rp.RazorPayIntegration.controller;
 
 import com.razorpay.RazorpayException;
 import com.rp.RazorPayIntegration.application.OrdersApplication;
+import com.rp.RazorPayIntegration.controller.response.KeyResponse;
 import com.rp.RazorPayIntegration.entity.Orders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor(onConstructor_ = @__(@Autowired))
+@CrossOrigin(origins = "https://406b-202-12-82-169.ngrok-free.app")
 public class OrdersController {
     private final OrdersApplication ordersApplication;
 
@@ -28,7 +30,20 @@ public class OrdersController {
     }
     @PostMapping("/paymentCallback")
     public String paymentCallback(@RequestParam Map<String, String> response) {
-        ordersApplication.updateOrderStatus(response);
+        System.out.println("success called");
+//        ordersApplication.updateOrderStatus(response);
         return "success";
+    }
+
+    @GetMapping(value = "/key", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<KeyResponse> getRazorpayKey(){
+        return ordersApplication.getKey();
+    }
+
+    @PostMapping("/webhook-callback")
+    public ResponseEntity<String> updateOrderStatusByWebhook(@RequestBody String response,
+                                                             @RequestHeader("X-Razorpay-Signature") String signature){
+        return ordersApplication.updateOrderStatusByWebhook(response,signature);
     }
 }

@@ -2,6 +2,7 @@ package com.rp.RazorPayIntegration.application;
 
 import com.razorpay.RazorpayException;
 import com.rp.RazorPayIntegration.application.service.OrdersService;
+import com.rp.RazorPayIntegration.controller.response.KeyResponse;
 import com.rp.RazorPayIntegration.entity.Orders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,13 @@ public class OrdersApplication {
 
     public void updateOrderStatus(Map<String, String> response) {
         ordersService.updateOrderStatus(response);
+    }
+
+    public ResponseEntity<KeyResponse> getKey() {
+        return ordersService.getKey();
+    }
+
+    public ResponseEntity<String> updateOrderStatusByWebhook(String response, String signature) {
+        return ordersService.updateOrderStatusByWebhook(response,signature);
     }
 }
